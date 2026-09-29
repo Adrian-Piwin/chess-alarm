@@ -10,7 +10,15 @@
  *   recall  Level 2 — no hint until MAX_ATTEMPTS_BEFORE_HINT wrong tries on
  *           the same move. Any wrong try makes the run non-flawless.
  */
-import { isLegalMove, resolveLine, START_FEN, type Color, type ResolvedMove, type Square, type SquarePair } from './chess';
+import {
+  isLegalMove,
+  resolveLine,
+  START_FEN,
+  type Color,
+  type ResolvedMove,
+  type Square,
+  type SquarePair,
+} from './chess';
 import type { TrainerMode } from './types';
 
 export const MAX_ATTEMPTS_BEFORE_HINT = 3;
@@ -97,7 +105,11 @@ function advance(state: TrainerState, feedback: TrainerFeedback): TrainerState {
 }
 
 /** The learner tries a move. */
-export function submitMove(state: TrainerState, from: Square, to: Square): { state: TrainerState; result: SubmitResult } {
+export function submitMove(
+  state: TrainerState,
+  from: Square,
+  to: Square,
+): { state: TrainerState; result: SubmitResult } {
   if (!isUserTurn(state)) return { state, result: 'ignored' };
 
   const step = nextStep(state)!;

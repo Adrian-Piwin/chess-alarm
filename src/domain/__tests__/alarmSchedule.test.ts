@@ -1,4 +1,12 @@
-import { describeWeekdays, formatAlarmTime, NAG_COUNT, nagTimes, nextOccurrence, upcomingOccurrences, type AlarmConfig } from '../alarmSchedule';
+import {
+  describeWeekdays,
+  formatAlarmTime,
+  NAG_COUNT,
+  nagTimes,
+  nextOccurrence,
+  upcomingOccurrences,
+  type AlarmConfig,
+} from '../alarmSchedule';
 
 // Wednesday 1 October 2025, 06:00 local time.
 const NOW = new Date(2025, 9, 1, 6, 0, 0);

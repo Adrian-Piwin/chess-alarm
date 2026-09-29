@@ -25,14 +25,17 @@ describe('opening library', () => {
       ids.forEach((id) => expect(id).toMatch(/^[a-z0-9-]+$/));
     });
 
-    it.each(opening.lines.map((l) => [l.name, l] as const))('line "%s" is legal SAN with enough learner moves', (_n, line) => {
-      const resolved = resolveLine(line.moves);
-      expect(resolved.length).toBeGreaterThanOrEqual(12);
-      // Every SAN must be exactly as chess.js writes it (checks, disambiguation…).
-      expect(resolved.map((m) => m.san)).toEqual(line.moves);
-      // Enough of the learner's own moves to be worth drilling.
-      expect(resolved.filter((m) => m.color === opening.side).length).toBeGreaterThanOrEqual(6);
-    });
+    it.each(opening.lines.map((l) => [l.name, l] as const))(
+      'line "%s" is legal SAN with enough learner moves',
+      (_n, line) => {
+        const resolved = resolveLine(line.moves);
+        expect(resolved.length).toBeGreaterThanOrEqual(12);
+        // Every SAN must be exactly as chess.js writes it (checks, disambiguation…).
+        expect(resolved.map((m) => m.san)).toEqual(line.moves);
+        // Enough of the learner's own moves to be worth drilling.
+        expect(resolved.filter((m) => m.color === opening.side).length).toBeGreaterThanOrEqual(6);
+      },
+    );
 
     it.each(opening.lines.map((l) => [l.name, l] as const))('line "%s" notes point at real plies', (_n, line) => {
       Object.keys(line.notes).forEach((ply) => {

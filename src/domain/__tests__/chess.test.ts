@@ -1,4 +1,14 @@
-import { checkedKingSquare, gridToSquare, parseMovetext, piecesFromFen, resolveLine, START_FEN, squareColor, squareToGrid, turnOf } from '../chess';
+import {
+  checkedKingSquare,
+  gridToSquare,
+  parseMovetext,
+  piecesFromFen,
+  resolveLine,
+  START_FEN,
+  squareColor,
+  squareToGrid,
+  turnOf,
+} from '../chess';
 
 describe('chess helpers', () => {
   it('parses PGN movetext', () => {

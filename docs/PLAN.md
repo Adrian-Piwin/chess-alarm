@@ -10,25 +10,25 @@ This document is the source of truth for scope. Tick items as they land.
 
 ## 1. Requirements (from the brief)
 
-| # | Requirement | Where it lives |
-|---|---|---|
-| R1 | One codebase for iOS, Android and web | Expo SDK 57 + Expo Router + react-native-web |
-| R2 | Main page is a **catalogue** of openings | `src/app/(tabs)/index.tsx` |
-| R3 | Select an opening → study it | `src/app/opening/[id].tsx` |
-| R4 | First time: the app **demonstrates** the whole line | Trainer mode `demo` |
-| R5 | **Level 1**: play the line fully guided (arrow + highlight on every move) | Trainer mode `guided` |
-| R6 | **Level 2**: play from memory. A wrong move is rejected with feedback and you keep going. After **3 failed attempts** on the same move you get a hint | Trainer mode `recall` |
-| R7 | Finish a Level 2 run **flawlessly** → earn a **star** on that line | `src/domain/progress.ts` |
-| R8 | **3 stars** → "Mastered" banner | `src/components/Banner.tsx` |
-| R9 | Flag an opening as **"Learning"** | Opening screen toggle |
-| R10 | **Alarm**: when it rings you're forced to play Level 2 of a line (Level 1 if you've never played that line). Cycles the opening until every line is mastered, then asks you to pick a new one | `src/features/alarm/*`, `src/app/alarm.tsx` |
-| R11 | Learn several openings at once. Alarm picks: **in order** (focus), **random among learning**, or **fully random** | `src/domain/scheduler.ts` |
-| R12 | "Pick a random opening for me" | Catalogue button |
-| R13 | Starting library: **≥10 White, ≥10 Black** openings | `src/data/openings/*` |
-| R14 | Clean chess.com-*feel* UI: board, pieces, move sounds, drag & tap controls — but its own look | `src/components/board/*`, `src/theme/*` |
-| R15 | Web: hide the alarm features and advertise the mobile app instead | `Platform.OS === 'web'` checks, `WebHero` |
-| R16 | Deploy to the DigitalOcean droplet | `.github/workflows/deploy.yml`, `deploy/` |
-| R17 | Clean, documented, tested code | README, `docs/`, Jest, ESLint, Prettier, CI |
+| #   | Requirement                                                                                                                                                                                   | Where it lives                               |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| R1  | One codebase for iOS, Android and web                                                                                                                                                         | Expo SDK 57 + Expo Router + react-native-web |
+| R2  | Main page is a **catalogue** of openings                                                                                                                                                      | `src/app/(tabs)/index.tsx`                   |
+| R3  | Select an opening → study it                                                                                                                                                                  | `src/app/opening/[id].tsx`                   |
+| R4  | First time: the app **demonstrates** the whole line                                                                                                                                           | Trainer mode `demo`                          |
+| R5  | **Level 1**: play the line fully guided (arrow + highlight on every move)                                                                                                                     | Trainer mode `guided`                        |
+| R6  | **Level 2**: play from memory. A wrong move is rejected with feedback and you keep going. After **3 failed attempts** on the same move you get a hint                                         | Trainer mode `recall`                        |
+| R7  | Finish a Level 2 run **flawlessly** → earn a **star** on that line                                                                                                                            | `src/domain/progress.ts`                     |
+| R8  | **3 stars** → "Mastered" banner                                                                                                                                                               | `src/components/Banner.tsx`                  |
+| R9  | Flag an opening as **"Learning"**                                                                                                                                                             | Opening screen toggle                        |
+| R10 | **Alarm**: when it rings you're forced to play Level 2 of a line (Level 1 if you've never played that line). Cycles the opening until every line is mastered, then asks you to pick a new one | `src/features/alarm/*`, `src/app/alarm.tsx`  |
+| R11 | Learn several openings at once. Alarm picks: **in order** (focus), **random among learning**, or **fully random**                                                                             | `src/domain/scheduler.ts`                    |
+| R12 | "Pick a random opening for me"                                                                                                                                                                | Catalogue button                             |
+| R13 | Starting library: **≥10 White, ≥10 Black** openings                                                                                                                                           | `src/data/openings/*`                        |
+| R14 | Clean chess.com-_feel_ UI: board, pieces, move sounds, drag & tap controls — but its own look                                                                                                 | `src/components/board/*`, `src/theme/*`      |
+| R15 | Web: hide the alarm features and advertise the mobile app instead                                                                                                                             | `Platform.OS === 'web'` checks, `WebHero`    |
+| R16 | Deploy to the DigitalOcean droplet                                                                                                                                                            | `.github/workflows/deploy.yml`, `deploy/`    |
+| R17 | Clean, documented, tested code                                                                                                                                                                | README, `docs/`, Jest, ESLint, Prettier, CI  |
 
 ## 2. Interpretation of the progression rules
 
@@ -42,14 +42,14 @@ Stars and mastery are tracked **per line** — an opening is a family of lines
                └──────────┘           └───────────┘           └────────────┘ ◀┘ (max ★★★)
 ```
 
-* **Watch** — the line auto-plays with move-by-move commentary. Skippable.
-* **Level 1** — every one of *your* moves is shown with an arrow; the opponent
+- **Watch** — the line auto-plays with move-by-move commentary. Skippable.
+- **Level 1** — every one of _your_ moves is shown with an arrow; the opponent
   replies automatically. Completing it unlocks Level 2.
-* **Level 2** — no help. A wrong move bounces back with an error sound and a
+- **Level 2** — no help. A wrong move bounces back with an error sound and a
   "Not quite — try again" message; the run is no longer flawless. After three
   wrong tries **on the same move** the correct move is hinted (arrow). You
   always play on to the end of the line.
-* A flawless Level 2 run earns ★ (up to ★★★). ★★★ = **line mastered**
+- A flawless Level 2 run earns ★ (up to ★★★). ★★★ = **line mastered**
   (banner). All lines mastered = **opening mastered** (bigger banner, and the
   opening leaves the learning rotation).
 
@@ -95,15 +95,15 @@ assets/
 
 Key decisions:
 
-* **Expo Router** for file-based navigation that works identically on web.
-* **chess.js** for move legality/SAN; our own board renderer in
+- **Expo Router** for file-based navigation that works identically on web.
+- **chess.js** for move legality/SAN; our own board renderer in
   **react-native-svg** so it looks identical on every platform.
-* **Board input** with React Native's `PanResponder` (tap-tap *and*
+- **Board input** with React Native's `PanResponder` (tap-tap _and_
   drag-and-drop), which react-native-web supports — no extra native modules.
-* **zustand + persist(AsyncStorage)** — tiny, typed, works on web
+- **zustand + persist(AsyncStorage)** — tiny, typed, works on web
   (localStorage) and native.
-* **Domain logic is framework-free** so the rules above are unit tested.
-* **Sounds are generated** by a script (no licensing questions, tiny files).
+- **Domain logic is framework-free** so the rules above are unit tested.
+- **Sounds are generated** by a script (no licensing questions, tiny files).
 
 ## 4. Opening library (v1)
 
@@ -119,16 +119,16 @@ Every line is validated with chess.js in `src/data/__tests__`.
 
 ## 5. Platform notes — the alarm
 
-* **iOS / Android:** implemented with `expo-notifications` weekly triggers
+- **iOS / Android:** implemented with `expo-notifications` weekly triggers
   (one per selected weekday) using a loud sound and a high-importance Android
   channel. When it fires a short burst of follow-up notifications
   (every minute for 10 minutes) is scheduled so it keeps nagging until the
   line is played. Tapping any of them deep-links to `/alarm`.
-* Operating systems do **not** let a regular app override silent mode or
+- Operating systems do **not** let a regular app override silent mode or
   launch itself full-screen from a notification without extra native work.
   Follow-ups (documented in `docs/ALARM.md`): iOS AlarmKit (iOS 26+) and an
   Android full-screen-intent `AlarmManager` module via a config plugin.
-* **Web:** no reliable background alarms → alarm UI hidden; the catalogue
+- **Web:** no reliable background alarms → alarm UI hidden; the catalogue
   shows a "Get the app for wake-up training" hero instead.
 
 ## 6. Deployment

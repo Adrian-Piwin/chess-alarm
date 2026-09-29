@@ -49,14 +49,26 @@ describe('scheduler', () => {
   it('random-learning only picks from the learning list', () => {
     const picks = new Set<string>();
     for (const r of [0, 0.49, 0.51, 0.99]) {
-      const t = pickPracticeTarget({ openings: ALL, learningIds: ['a', 'c'], progress: {}, mode: 'random-learning', rng: () => r });
+      const t = pickPracticeTarget({
+        openings: ALL,
+        learningIds: ['a', 'c'],
+        progress: {},
+        mode: 'random-learning',
+        rng: () => r,
+      });
       picks.add(t!.opening.id);
     }
     expect([...picks].sort()).toEqual(['a', 'c']);
   });
 
   it('fully-random can pick any unmastered opening', () => {
-    const t = pickPracticeTarget({ openings: ALL, learningIds: [], progress: {}, mode: 'fully-random', rng: () => 0.99 });
+    const t = pickPracticeTarget({
+      openings: ALL,
+      learningIds: [],
+      progress: {},
+      mode: 'fully-random',
+      rng: () => 0.99,
+    });
     expect(t?.opening.id).toBe('c');
   });
 

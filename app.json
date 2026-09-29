@@ -1,31 +1,68 @@
 {
   "expo": {
-    "name": "cafs",
-    "slug": "cafs",
+    "name": "Chess Alarm",
+    "slug": "chess-alarm",
     "version": "1.0.0",
+    "description": "Learn chess openings line by line — and wake up to them.",
+    "scheme": "chessalarm",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#16181D",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.winovate.chessalarm",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
     },
     "android": {
+      "package": "com.winovate.chessalarm",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#16181D",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.SCHEDULE_EXACT_ALARM",
+        "android.permission.VIBRATE"
+      ],
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "output": "single",
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "name": "Chess Alarm — learn chess openings",
+      "shortName": "Chess Alarm",
+      "themeColor": "#16181D",
+      "backgroundColor": "#16181D"
     },
     "plugins": [
       "expo-router",
       "expo-audio",
       "expo-font",
-      "expo-splash-screen"
-    ]
+      [
+        "expo-notifications",
+        {
+          "color": "#56B870",
+          "sounds": ["./assets/sounds/alarm.wav"]
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#16181D"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
   }
 }
