@@ -12,7 +12,19 @@ The platform's rules live in `Adrian-Piwin/winovate-platform` (`CLAUDE.md`,
 `NEW-PROJECT.md`). This project follows them: no ports, no build on the
 droplet, no secrets in git, `platformctl` for everything.
 
-## One-time setup (≈5 minutes, needs root SSH: `ssh apigen`)
+## One-time setup (needs root SSH: `ssh apigen`)
+
+**Quick way:** from the repo root run
+
+```bash
+./deploy/setup-droplet.sh
+```
+
+It performs steps 1–3 below (idempotent, safe to re-run), restores the
+previous Caddy compose file if `platformctl caddy-up` fails, and sets the
+GitHub secrets if the `gh` CLI is logged in. Then do step 4.
+
+The manual steps, for reference:
 
 Run these from a checkout of this repo on a machine with the `apigen` SSH alias.
 
