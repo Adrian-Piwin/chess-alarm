@@ -1,0 +1,13 @@
+# Platform manifest — copy to /opt/platform/projects/chess-alarm/project.yml
+name: chess-alarm
+title: Chess Alarm
+kind: static
+repo: Adrian-Piwin/chess-alarm
+status: active
+domains: [chess.winovatesolutions.com]
+path: /opt/platform/data/chess-alarm/current
+notes: >
+  Expo (React Native Web) single-page app, exported by CI with
+  `expo export --platform web` and published as a per-commit release
+  directory with an atomic `current` symlink flip. No server, no database:
+  progress lives in the browser's localStorage.

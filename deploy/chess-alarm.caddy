@@ -1,0 +1,22 @@
+# Chess Alarm web app. Static Expo export published by CI into
+# data/chess-alarm/releases/<tag>; the current symlink is flipped atomically by
+# platformctl publish. Rollback: re-point `current` (see deploy/README.md).
+chess.winovatesolutions.com {
+	root * /srv/chess-alarm/current
+	encode zstd gzip
+	@static path /_expo/static/* /assets/*
+	header @static Cache-Control "public, max-age=31536000, immutable"
+	# Everything else (index.html under any SPA route) must revalidate so a new
+	# deploy is picked up immediately.
+	@dynamic not path /_expo/static/* /assets/*
+	header @dynamic Cache-Control "no-cache"
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+		-Server
+	}
+	# Single-page app: every unknown path is handled by the client router.
+	try_files {path} /index.html
+	file_server
+}

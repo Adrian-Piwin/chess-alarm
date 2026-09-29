@@ -1,0 +1,53 @@
+# Builds the web app and publishes it to the Winovate droplet as a static
+# site (same pattern as winovate-root). See deploy/README.md for the one-time
+# droplet setup and the two repo secrets this needs.
+name: Deploy web
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test -- --ci
+      - run: npx expo export --platform web
+
+      - name: Publish to the droplet
+        env:
+          KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          PROJECT: ${{ vars.PLATFORM_PROJECT || 'chess-alarm' }}
+        run: |
+          if [ -z "$KEY" ] || [ -z "$HOST" ]; then
+            echo "::error::DEPLOY_SSH_KEY / DEPLOY_HOST secrets are not set — see deploy/README.md"
+            exit 1
+          fi
+          install -m 600 /dev/stdin ~/deploy_key <<< "$KEY"
+          mkdir -p ~/.ssh && ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          TAG="sha-${GITHUB_SHA::7}"
+          # The deploy key is pinned to a forced command that only accepts
+          # `publish <project> <tag>` with the archive on stdin. It unpacks into a
+          # fresh release directory and flips the `current` symlink atomically.
+          tar -czf - -C dist . | ssh -i ~/deploy_key -o BatchMode=yes \
+            deploy@"$HOST" "publish $PROJECT $TAG"
+
+      - name: Smoke test
+        run: |
+          sleep 3
+          curl -fsS -o /dev/null -w "%{http_code}\n" https://chess.winovatesolutions.com/
+          curl -fsS -o /dev/null -w "%{http_code}\n" https://chess.winovatesolutions.com/opening/italian-game
